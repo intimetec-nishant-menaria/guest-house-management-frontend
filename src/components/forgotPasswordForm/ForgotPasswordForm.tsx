@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Button from "@/components/ui/Button";
+import Input from "@/components/common/Input";
+import Label from "@/components/common/Label";
+import Button from "@/components/common/Button";
 import { Link } from "react-router-dom";
 import {
   forgotPasswordSchema,
   type ForgotPasswordInput,
-} from "@/schemas/forgotPasswordSchema";
+} from "@/utils/schemas/forgotPasswordSchema";
 
 const ForgotPasswordForm = () => {
   const {

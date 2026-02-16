@@ -1,13 +1,13 @@
 import { api } from "@/services/api";
 import axios from "axios"; 
-import Label from "@/components/ui/Label";
-import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
+import Label from "@/components/common/Label";
+import Input from "@/components/common/Input";
+import Button from "@/components/common/Button";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { LoginInput } from "@/schemas/loginSchema";
-import { loginSchema } from "@/schemas/loginSchema";
+import type { LoginInput } from "@/utils/schemas/loginSchema";
+import { loginSchema } from "@/utils/schemas/loginSchema";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 

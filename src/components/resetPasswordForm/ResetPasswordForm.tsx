@@ -4,17 +4,14 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
-import Button from "@/components/ui/Button";
+import Input from "@/components/common/Input";
+import Label from "@/components/common/Label";
+import Button from "@/components/common/Button";
 import {
   resetPasswordSchema,
   type ResetPasswordInput,
-} from "@/schemas/resetPasswordSchema";
-
-type ResetPasswordProps = {
-  token: string;
-};
+} from "@/utils/schemas/resetPasswordSchema";
+import type { ResetPasswordProps } from "@/utils/interfaces/resetPassword";
 
 const ResetPasswordForm = ({ token }: ResetPasswordProps) => {
   const {
