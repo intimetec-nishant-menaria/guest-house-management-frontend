@@ -1,11 +1,4 @@
-import React from "react";
-
-type AuthLayoutProps = {
-  title: string;
-  children: React.ReactNode;
-  iconSrc?: string;
-  iconAlt?: string;
-};
+import type { AuthLayoutProps } from "@/utils/interfaces/authLayout";
 
 const AuthLayout = ({ title, children, iconSrc, iconAlt }: AuthLayoutProps) => {
   return (

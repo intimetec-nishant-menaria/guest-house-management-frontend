@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "@/pages/login/Login";
-import ForgotPassword from "@/pages/forgot-password/ForgotPassword";
-import ResetPassword from "@/pages/reset-password/ResetPassword";
+import ForgotPassword from "@/pages/forgotPassword/ForgotPassword";
+import ResetPassword from "@/pages/resetPassword/ResetPassword";
 import Dashboard from "@/pages/dashboard/Dashboard";
 
 export default function AppRouter() {
