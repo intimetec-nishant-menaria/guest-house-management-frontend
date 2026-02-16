@@ -1,8 +1,4 @@
-import React from "react";
-
-type LabelProps = React.LabelHTMLAttributes<HTMLLabelElement> & {
-  className?: string;
-};
+import type { LabelProps } from "@/utils/interfaces/label";
 
 const Label = ({ children, className = "", ...props }: LabelProps) => {
   return (

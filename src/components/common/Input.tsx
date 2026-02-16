@@ -1,6 +1,4 @@
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  className?: string;
-};
+import type { InputProps } from "@/utils/interfaces/input";
 
 const Input = ({ type, className = "", ...props }: InputProps) => {
   const baseStyles =  "rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";

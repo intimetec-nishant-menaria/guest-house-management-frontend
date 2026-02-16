@@ -1,8 +1,4 @@
-import React from "react";
-
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  className?: string;
-};
+import type { ButtonProps } from "@/utils/interfaces/button";
 
 const Button = ({ children, className = "", ...props }: ButtonProps) => {
   return (
