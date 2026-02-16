@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/features/forms/ResetPasswordForm";
+import ResetPasswordForm from "@/components/resetPasswordForm/ResetPasswordForm";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { useSearchParams } from "react-router-dom";
 

@@ -1,10 +1,11 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
-import ForgotPasswordForm from "@/features/forms/ForgotPasswordForm";
+import ForgotPasswordForm from "@/components/forgotPasswordForm/ForgotPasswordForm";
+
 const ForgotPassword = () => {
   return (
     <AuthLayout
       title="Forgot Password?"
-      iconSrc="/src/assets/question-sign.png" 
+      iconSrc="/src/assets/question_sign.png"
       iconAlt="Forgot password"
     >
       <div className="text-center">
