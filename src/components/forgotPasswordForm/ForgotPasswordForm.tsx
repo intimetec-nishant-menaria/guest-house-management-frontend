@@ -8,8 +8,14 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordInput,
 } from "@/utils/schemas/forgotPasswordSchema";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/app/store/store";
+import { forgotPassword } from "@/app/asyncThunk/authThunk";
+import toast from "react-hot-toast";
 
 const ForgotPasswordForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
     register,
     handleSubmit,
@@ -18,8 +24,15 @@ const ForgotPasswordForm = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = (data: ForgotPasswordInput) =>
-    console.log("Forgot password email:", data);
+  const onSubmit = async (data: ForgotPasswordInput) => {
+    const resultAction = await dispatch(forgotPassword(data));
+
+    if (forgotPassword.fulfilled.match(resultAction)) {
+      toast.success("Reset link sent to your email!");
+    } else {
+      toast.error(resultAction.payload as string);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">

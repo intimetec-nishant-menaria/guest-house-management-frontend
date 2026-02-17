@@ -1,19 +1,20 @@
-import { api } from "@/services/api";
-import axios from "axios"; 
 import Label from "@/components/common/Label";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { LoginInput } from "@/utils/schemas/loginSchema";
 import { loginSchema } from "@/utils/schemas/loginSchema";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/app/store/store";
+import { loginUser } from "@/app/asyncThunk/authThunk";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch<AppDispatch>();
+ 
   const {
     register,
     handleSubmit,
@@ -23,22 +24,12 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    try {
-      const res = await api.post("/auth/login", data, {
-      withCredentials: true,
-    }); 
-      console.log(res.data);
-      toast.success("Logged in successfully!", { duration: 3000 });
+    const resultAction = await dispatch(loginUser(data));
+    if (loginUser.fulfilled.match(resultAction)) {
+      toast.success("Logged in successfully!");
       navigate("/dashboard");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error("Login error:", err.message);
-      }
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Login failed");
-      } else {
-        toast.error("Something went wrong");
-      }
+    } else {
+      toast.error(resultAction.payload as string);
     }
   };
 

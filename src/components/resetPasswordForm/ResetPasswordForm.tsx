@@ -1,7 +1,4 @@
-import { api } from "@/services/api";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/common/Input";
@@ -11,9 +8,20 @@ import {
   resetPasswordSchema,
   type ResetPasswordInput,
 } from "@/utils/schemas/resetPasswordSchema";
-import type { ResetPasswordProps } from "@/utils/interfaces/resetPassword";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/app/store/store";
+import { resetPassword } from "@/app/asyncThunk/authThunk";
+import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const ResetPasswordForm = ({ token }: ResetPasswordProps) => {
+const ResetPasswordForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const token: string | null = searchParams.get("token");
+  const email: string | null = searchParams.get("email");
+
   const {
     register,
     handleSubmit,
@@ -22,23 +30,21 @@ const ResetPasswordForm = ({ token }: ResetPasswordProps) => {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const navigate = useNavigate();
-
   const onSubmit = async (data: ResetPasswordInput) => {
-    try {
-      await api.post("/auth/reset-password", {
+    const resultAction = await dispatch(
+      resetPassword({
+        email,
         token,
-        newPassword: data.password,
-      });
+        password: data.password,
+        confirmPassword : data.confirmPassword,
+      }),
+    );
 
+    if (resetPassword.fulfilled.match(resultAction)) {
       toast.success("Password reset successful!");
-      navigate("/");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Reset failed");
-      } else {
-        toast.error("Something went wrong");
-      }
+      navigate('/');
+    } else {
+      toast.error(resultAction.payload as string);
     }
   };
 
