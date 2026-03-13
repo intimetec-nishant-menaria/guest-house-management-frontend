@@ -12,6 +12,7 @@ import type { RoomTypesPayload } from "@/utils/interfaces/roomTypes";
 import UpdateRoomModel from "./UpdateRoomModel";
 import { fetchRoomType } from "@/app/asyncThunk/roomTypeThunk";
 import RoomStatusDropDown from "../common/roomStatusDropDown/RoomStatusDropDown.tsx";
+import ConfirmationModel from "../common/confirmationModel/confirmationModel.tsx";
 
 const RoomManagement = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,8 @@ const RoomManagement = () => {
   const [roomTypeFilter, setRoomTypeFilter] = useState(0);
   const [roomStatusFilter, setRoomStatusFilter] = useState(0);
   const [isRoomManagementOpen , setIsRoomManagementOpen] = useState(true);
+  const [isConfirmationModelOpen , setConfirmationModel] = useState(false);
+  const [roomId , setRoomId] = useState<number | null>(null);
 
   const filteredItems = useMemo(() => {
     let temp = roomTypeFilter === 0 ? rooms : rooms.filter(room => room.roomTypeId === roomTypeFilter);
@@ -39,7 +42,7 @@ const RoomManagement = () => {
 
   const [isCreateRoomModalOpen, setIsCreateModalOpen] = useState(false);
   const openCreateRoomModal = () => setIsCreateModalOpen(true);
-  const closeModal = () => setIsCreateModalOpen(false);
+  const closeModel = () => setIsCreateModalOpen(false);
 
   const [editingRoom, setEditingRoom] = useState<RoomTypesPayload | null>(null);
   const openUpdateRoomModel = (room: RoomTypesPayload) => setEditingRoom(room);
@@ -51,10 +54,10 @@ const RoomManagement = () => {
   }, [dispatch]);
 
   const handleDelete = async (roomid: number) => {
-    if (window.confirm("Delete this room?")) {
       await dispatch(deleteRoom(roomid));
       await dispatch(fetchRooms());
-    }
+      setRoomId(null);
+      setConfirmationModel(false);
   };
   const goToNextPage = () => setCurrentPage(prev => prev + 1);
   const goToPrevPage = () => setCurrentPage(prev => prev - 1);
@@ -158,7 +161,10 @@ const RoomManagement = () => {
                       <div className="flex justify-center items-center gap-3">
                         <img src={editIcon} alt="Edit" className="cursor-pointer w-5 h-5 hover:scale-110" onClick={() => openUpdateRoomModel(room)} />
                         <span className="text-gray-300">|</span>
-                        <img src={deleteIcon} alt="Delete" className="cursor-pointer w-5 h-5 hover:scale-110" onClick={()=>handleDelete(room.id)} />
+                        <img src={deleteIcon} alt="Delete" className="cursor-pointer w-5 h-5 hover:scale-110" onClick={()=>{
+                          setRoomId(room.id)
+                          setConfirmationModel(true)
+                        }} />
                       </div>
                     </td>
                   </tr>
@@ -175,7 +181,7 @@ const RoomManagement = () => {
               goToNext={goToNextPage}
               goToSpecificPage={goToSpecificPage}
             />
-            {isCreateRoomModalOpen && <AddRoomModel closeModal={closeModal} />}
+            {isCreateRoomModalOpen && <AddRoomModel closeModel={closeModel} />}
             {editingRoom && (
               <UpdateRoomModel closeModel={closeUpdateRoomModel} data={editingRoom} />
             )}
@@ -185,6 +191,7 @@ const RoomManagement = () => {
           <RoomCategoryManagement/>
         )
       }
+      {isConfirmationModelOpen && <ConfirmationModel label="Are you sure you want to delete this Room?" isConfirmationModelOpen={setConfirmationModel} submitAction={()=>handleDelete(roomId)}/>}
     </div>
   );
 };

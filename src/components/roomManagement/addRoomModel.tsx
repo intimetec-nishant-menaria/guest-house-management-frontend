@@ -6,11 +6,7 @@ import toast from "react-hot-toast";
 
 const numberRegex = /^\d*$/;
 
-interface Props {
-  closeModal: () => void;
-}
-
-function AddRoomModel({ closeModal }: Props) {
+function AddRoomModel({ closeModel }:{closeModel:()=>void}) {
   const dispatch = useAppDispatch();
 
   const [roomNumber, setRoomNumber] = useState("");
@@ -34,7 +30,7 @@ function AddRoomModel({ closeModal }: Props) {
         if (addRoom.fulfilled.match(resultAction)) {
           toast.success("Room added successfully!");
           await dispatch(fetchRooms());
-          closeModal();
+          closeModel();
         } else {
           toast.error((resultAction.payload as string) || "Failed to add room");
         }
@@ -65,7 +61,7 @@ function AddRoomModel({ closeModal }: Props) {
             <p className="text-sm text-slate-500">Register a new unit in the guest house system.</p>
           </div>
           <button 
-            onClick={closeModal} 
+            onClick={closeModel} 
             className="p-2 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
           >
             ✕
@@ -110,7 +106,7 @@ function AddRoomModel({ closeModal }: Props) {
           <div className="flex items-center gap-3 pt-4 border-t border-slate-50">
             <button
               type="button"
-              onClick={closeModal}
+              onClick={closeModel}
               className="flex-1 px-4 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors"
             >
               Cancel

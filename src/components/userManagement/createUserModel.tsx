@@ -8,11 +8,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 
-interface Props {
-  closeModal: () => void;
-}
-
-const CreateUserModal = ({ closeModal }: Props) => {
+const CreateUserModal = ({ closeModel }: {closeModel:()=>void}) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -36,7 +32,7 @@ const CreateUserModal = ({ closeModal }: Props) => {
       if (createUser.fulfilled.match(resultAction)) {
         toast.success("User created successfully!");
         await dispatch(fetchUsers());
-        closeModal();
+        closeModel();
       } else {
         toast.error("Failed to create user");
       }
@@ -56,7 +52,7 @@ const CreateUserModal = ({ closeModal }: Props) => {
             </p>
           </div>
           <button
-            onClick={closeModal}
+            onClick={closeModel}
             className="p-2 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-all"
           >
             ✕
@@ -159,7 +155,7 @@ const CreateUserModal = ({ closeModal }: Props) => {
           <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-50">
             <button
               type="button"
-              onClick={closeModal}
+              onClick={closeModel}
               className="px-6 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all"
             >
               Cancel
